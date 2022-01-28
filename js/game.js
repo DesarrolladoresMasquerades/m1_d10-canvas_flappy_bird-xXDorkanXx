@@ -20,6 +20,7 @@ class Game{
     }
 
     play(){
+        this.frames += 1;
         this.move();
         this.checkCollision();
         this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -33,7 +34,15 @@ class Game{
         this.player.move(this.frames);
     }
 
-    checkCollision(){}
+    checkCollision(){
+        let collisions = false;
+
+        if(this.obstacles.objects.some((obstacle)=> this.player.collidesWith(obstacle))) collisions = true;
+
+        if(this.player.exitsCanvas()) collisions = true;
+
+        return collisions;
+    }
 
     draw(){
         this.background.draw(this.frames);
