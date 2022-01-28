@@ -6,7 +6,7 @@ class Background{
             width: this.ctx.canvas.width,
             height: 79,
             x: 0,
-            y: ctx.canvas.height -79,
+            y: this.ctx.canvas.height - 79,
             vx: -3,
             vy: 0
         };
@@ -63,7 +63,7 @@ class Background{
             this.backgroundFront.x + this.backgroundFront.width,
             this.backgroundFront.y,
             this.backgroundFront.width,
-            this.backgroundFar.height
+            this.backgroundFront.height
         );
     }
 };
