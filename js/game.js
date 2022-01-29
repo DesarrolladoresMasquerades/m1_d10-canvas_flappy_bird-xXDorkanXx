@@ -77,7 +77,7 @@ class Game{
     }
 
     draw(){
-        this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
         this.background.draw(this.frames);
         this.obstacles.draw(this.frames);
         this.player.draw(this.frames);
