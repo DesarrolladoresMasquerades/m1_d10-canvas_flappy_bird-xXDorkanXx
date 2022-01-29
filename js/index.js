@@ -23,6 +23,7 @@ const game = new Game(ctx, player, background, obstacles);
 
 const startButton = document.getElementById("start-button")
 startButton.onclick = ()=> {
-  startButton.remove();
+  startButton.textContent = "Play Again"
+  startButton.blur();
   game.startGame();
 };

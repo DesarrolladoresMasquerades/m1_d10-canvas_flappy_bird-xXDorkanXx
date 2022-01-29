@@ -4,11 +4,61 @@ class Obstacles{
         this.objects = [];
     }
 
-    move(frames){
-        console.log("Obstacles move to frame number: ", frames)
+    init(){
+        this.objects = [];
     }
 
-    draw(frames){
-        console.log("Obstacles draw to frame number: ", frames)
+    move(frames){
+        if(frames < 20) return
+        if(frames % 150 === 0){
+            const obstaclePosition = Math.floor((Math.random() * (this.ctx.canvas.height - 100)) + 100);
+            this.objects.push(this.getNewObstacleBottom(obstaclePosition));
+            this.objects.push(this.getNewObstacleTop(obstaclePosition));
+        }
+        this.objects.forEach(object=> object.x += object.vx)
+    }
+
+    getNewObstacleTop(position){
+        const newObstacleTop = {
+            img: new Image(),
+            width: 80,
+            height: 400,
+            y: position - 60 - 400,
+            x: this.ctx.canvas.width + 80,
+            vx: -3,
+            vy: 0
+        }
+
+        newObstacleTop.img.src = "/images/obstacle_top.png";
+
+        return newObstacleTop;
+    }
+
+    getNewObstacleBottom(position){
+        const newObstacleBottom = {
+            img: new Image(),
+            width: 80,
+            height: 400,
+            x: this.ctx.canvas.width + 80,
+            y: position + 60,
+            vx: -3,
+            vy: 0
+        }
+
+        newObstacleBottom.img.src = "/images/obstacle_bottom.png";
+    
+        return newObstacleBottom;
+    }
+
+    draw(){
+        this.objects.forEach(object=>{
+            this.ctx.drawImage(
+                object.img,
+                object.x,
+                object.y,
+                object.width,
+                object.height
+            )
+        })
     }
 };

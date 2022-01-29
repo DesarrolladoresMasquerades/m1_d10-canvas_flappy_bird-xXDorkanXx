@@ -1,19 +1,78 @@
 class Player{
     constructor(ctx){
         this.ctx = ctx;
-        this.x = 100;
-        this.y = 200;
-
         this.width = 46;
         this.height = 32;
+
+        //position
+        this.x = 100;
+        this.y = 100;
+
+        //acceleration
+        this.vy = 0;
+        this.ay = 0.1;
+
+        this.img = new Image();
+        this.img.src = "/images/flappy-sprite.png";
+
+        //sprites image definition
+        this.spriteColumns = 3;
+        this.spriteRows = 1;
+
+        //counters to navigate in the image
+        this.spriteCol = 0;
+        this.spriteRow = 0,
+        this.spriteX = 0,
+        this.spriteY = 0
     }
 
-    move(frames){
-        console.log("Player move to frame number: ", frames)
+    init(){
+        this.x = 100,
+        this.y = 100,
+        this.vy = 0,
+        this.spriteCol = 0,
+        this.spriteRow = 0,
+        this.spriteX = 0,
+        this.spriteY = 0
+    }
+
+    move(){
+        //only move y coordinate in gravity field
+        this.vy += this.ay;
+        this.y += this.vy;
+    }
+
+    //every 10 tiks, show the following frame, if is the last frame, start again
+    setSpriteFrame(frames){
+        if(frames % 10 === 0){
+            this.spriteCol += 1;
+
+            if(this.spriteCol >= this.spriteColumns){
+                this.spriteCol = 0;
+            }
+
+            this.spriteX = (this.width * this.spriteCol) // the x of the current sprite in the image
+            this.spriteY = (this.height * this.spriteRow) // the y of the current sprite image
+        }
+    }
+
+    flyUp(){
+        this.vy = -3.5;
     }
 
     draw(frames){
-        console.log("Player draw to frame number: ", frames)
+        this.setSpriteFrame(frames);
+        this.ctx.drawImage(
+            this.img,
+            this.spriteX,
+            this.spriteY,
+            this.width,
+            this.height,
+            this.x, // the x-axis coordinate in the destination canvas
+            this.y, //the y-axis coordinate in the destination canvas
+            this.width, // allows scaling of the draw image
+            this.height // allows scaling of the drawn image
+        );
     }
 
     collidesWith(object){

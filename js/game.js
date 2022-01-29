@@ -4,8 +4,15 @@ class Game{
         this.player = player;
         this.background = background;
         this.obstacles = obstacles;
-        this.frames = null;
+        this.frames = 0;
+        this.score = 0;
 
+        document.addEventListener(
+            "keydown",
+            (event)=>{
+                this.onKeyDown(event.keyCode);
+            }
+        )
     }
 
     startGame(){
@@ -14,18 +21,34 @@ class Game{
     }
 
     init(){
+        if(this.frames) this.stop()
         this.frames = 0;
+        this.background.init()
+        this.obstacles.init()
+        this.player.init()
         // this.sound.stop() etc..
-        // background.init();
     }
 
     play(){
-        this.frames += 1;
         this.move();
-        this.checkCollision();
-        this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         this.draw();
-        requestAnimationFrame(this.play.bind(this));
+        if(this.checkCollision()) this.gameOver();
+        if(this.frames !== null){
+            this.frames = requestAnimationFrame(this.play.bind(this));
+        }
+
+        /*
+        this.frames += 1;
+        */ 
+    }
+
+    stop(){
+        cancelAnimationFrame(this.frames);
+        this.frames = null;
+    }
+
+    onKeyDown(keyCode){
+        this.player.flyUp();
     }
 
     move(){
@@ -45,8 +68,34 @@ class Game{
     }
 
     draw(){
+        this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         this.background.draw(this.frames);
         this.obstacles.draw(this.frames);
         this.player.draw(this.frames);
+        this.drawScore();
+    }
+
+    drawScore(){
+        this.ctx.save();
+        this.ctx.fillStyle = "black";
+        this.ctx.font = "bold 24px sans-serif";
+        this.ctx.fillText(`Score: ${this.score} pts`, 20, 40);
+        this.ctx.restore();
+    }
+
+    gameOver(){
+        this.stop();
+        this.ctx.save();
+        this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.fillStyle = "white";
+        this.ctx.textAlign = "center";
+        this.ctx.font = "bold 32px sans-serif";
+        this.ctx.fillText(
+            "Game Over",
+            this.ctx.canvas.width / 2,
+            this.ctx.canvas.height / 2
+        );
+        this.ctx.restore();
     }
 };

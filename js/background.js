@@ -24,7 +24,14 @@ class Background{
         this.backgroundFar.img.src = "images/bg-far.png"
     }
 
-    move(frames){
+    init(){
+        this.backgroundFar.x = 0;
+        this.backgroundFar.y = -79;
+        this.backgroundFront.x = 0;
+        this.backgroundFront.y = this.ctx.canvas.height - 79;
+    }
+
+    move(){
         this.backgroundFront.x += this.backgroundFront.vx;
         this.backgroundFar.x += this.backgroundFar.vx;
 
@@ -32,7 +39,7 @@ class Background{
         if(this.backgroundFar.x + this.backgroundFar.width <= 0) this.backgroundFar.x = 0;
     }
 
-    draw(frames){
+    draw(){
         //Far bg first piece
         this.ctx.drawImage(
             this.backgroundFar.img,
