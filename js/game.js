@@ -32,6 +32,7 @@ class Game{
     play(){
         this.move();
         this.draw();
+        this.checkScore();
         if(this.checkCollision()) this.gameOver();
         if(this.frames !== null){
             this.frames = requestAnimationFrame(this.play.bind(this));
@@ -55,6 +56,14 @@ class Game{
         this.background.move(this.frames);
         this.obstacles.move(this.frames);
         this.player.move(this.frames);
+    }
+
+    checkScore(){
+        for(let i = 0; i < this.obstacles.objects.length; i++){
+            if(this.player.x === this.obstacles.objects[i].x + this.obstacles.objects[i].width){
+                this.score += 0.5;
+            }
+        }
     }
 
     checkCollision(){
